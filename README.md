@@ -6,7 +6,7 @@ Extracts important features from CDR (Call Data Record) and represent all the in
   Create a virtual environment with:\
     ```virtual env CDR_ENV```\
   Set the FLASK_APP:\
-    ```FLASP_APP=CDRAnalyser```\
+    ```FLASP_APP=CDRAnalyser```
   
 # Usage
   ```falsk run```
