@@ -3,7 +3,7 @@ Extracts important features from CDR (Call Data Record) and represent all the in
 
 # Setup & Running the Script
   Place Date.html & home.html in a templates Folder 
-  Create a virtual environment with ```virtual env FLASK_APP```
+  Create a virtual environment with ```virtual env CDR_ENV```
   Type commands:
     ```FLASP_APP=CDRAnalyser```
   
