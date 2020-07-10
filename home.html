@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Digital Foot Printing Using CDR</title>
+
+    <style>
+      #map {height:400px; width:400px; left:500px ;}
+
+      .button1 {
+        padding: 5px 5px;
+        text-align: center;
+        display: inline-block;
+        font-size: 15px;
+        margin: 2px 110px;
+        cursor: pointer;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <p style="text-align:center;font-size:50px;">Digital Foot-Printing Using CDR </p>
+    
+    <p style="text-align:left;font-size:30px;margin-left:110px"> Target Info </p>
+    <p style="text-align:left;font-size:25px;margin-left:150px">
+      <!--  GENERAL TARGET INFO  -->
+      IMSI: {{ general_info.IMSI }} <br>
+      IMEI: {{ general_info.IMEI }} <br>
+      Most Frequently Called: {{ general_info.MostFrequentlyDialed }} <br>
+      Longest Call: {{ general_info.LongestCall }} <br>
+      Longest Call Date: {{ general_info.LongestCallDate }} <br>
+      Longest Call Time: {{ general_info.LongestCallTime }} seconds<br>
+      Longest Call Originating Location (Lat, Lon): {{ general_info.LongestCallOriginatingLocation }} <br>
+      Longest Call Ending Location (Lat, Lon): {{ general_info.LongestCallEndingLocation }}
+
+      <div id="map" style="position:absolute; left:970px; top:170px;"></div>
+
+      <script>
+
+          function initMap() {
+            
+            var loc1 = { lat: {{ general_info.LongOrigLat }}, lng: {{ general_info.LongOrigLng }} };
+            var loc2 = { lat: {{ general_info.LongEndLat }}, lng: {{ general_info.LongEndLng }} };
+
+            var map = new google.maps.Map( document.getElementById('map'), {
+              zoom: 16,
+              center: loc1
+            });
+            var marker = new google.maps.Marker({position: loc1, map: map});
+            var marker = new google.maps.Marker({position: loc2, map: map});
+
+          }
+      </script>
+
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR-API-KEY&callback=initMap">
+      </script>
+    </p>
+
+    <div style="margin-left:110px; font-size:25px;">
+      <form action="/Date", method="get">
+        <label for="SelectedDate">Select Date:</label>
+        
+        <select name=SelectedDate id=SelectedDate>
+          {% for d in dates %}
+            <option value="{{ d[0] }}">{{ d[0] }}</option>
+          {% endfor %}
+        </select>
+
+        <input type="submit" value="Date-Wise Analysis">
+      </form>
+    </div>
+
+    <div id="caption" style="position:absolute; left:1110px; top:560px;"><p>LONGEST CALL</p></div>
+
+  </body>
+
+</html>

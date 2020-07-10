@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<title>Digital Foot Printing Using CDR</title>
+
+	<style>
+		#map {height:280px; width:530px;}
+
+		table, th, td{
+			border-collapse: collapse;
+			border: 1px solid black;
+		}
+
+		th, td{
+			padding: 10px;
+			text-align: center;
+		}
+	
+	</style>
+	
+	<script src="https://code.jquery.com/jquery.js"></script>
+
+	</head>
+
+	<body>
+		<table>
+			<caption><h3>General Characterstics for {{post.date}}</h3></caption>
+			<tr>
+				<th>Feature</th>
+				<th>Called Party</th>
+				<th>Time</th>
+				<th>Duration</th>
+				<th>Originating Location</th>
+				<th>Ending location</th>
+				<th>View Location</th>
+			</tr>
+			
+			<tr>
+				<td>Longest Call</td>
+				<td>{{ post.longest_call[0] }}</td>
+				<td>{{ post.longest_call[1] }}</td>
+				<td>{{ post.longest_call[2] }}</td>
+				<td>{{ post.longest_call[3] }}</td>
+				<td>{{ post.longest_call[4] }}</td>
+				<td><button onclick="showmap('{{post.longest_call[3]}}', '{{post.longest_call[4]}}')">View</button></td>
+			</tr>
+
+			<tr>
+				<td>First Call</td>
+				<td>{{ post.first_call[0] }}</td>
+				<td>{{ post.first_call[1] }}</td>
+				<td>{{ post.first_call[2] }}</td>
+				<td>{{ post.first_call[3] }}</td>
+				<td>{{ post.first_call[4] }}</td>
+				<td><button onclick="showmap('{{post.first_call[3]}}', '{{post.first_call[4]}}')">View</button></td>
+			</tr>
+
+			<tr>
+				<td>Last Call</td>
+				<td>{{ post.last_call[0] }}</td>
+				<td>{{ post.last_call[1] }}</td>
+				<td>{{ post.last_call[2] }}</td>
+				<td>{{ post.last_call[3] }}</td>
+				<td>{{ post.last_call[4] }}</td>
+				<td><button onclick="showmap('{{post.last_call[3]}}', '{{post.last_call[4]}}')">View</button></td>
+			</tr>
+		</table>
+
+		<p> Most Frequently Dialed: {{post.most_frequently_dialed}}</p> 
+
+		<div id="map" style="position:absolute; left:890px; top:10px;"></div>
+
+		<table>
+			<caption><h3>Call Details for {{ post.date }}</h3></caption>
+				
+			<tr>
+				<th>Called Party</th>
+				<th>Time</th>
+				<th>Duration (sec)</th>
+				<th>Originating Tower-ID</th>
+				<th>View Originating Tower-ID Coordinates</th>
+				<th>Ending Tower-ID</th>
+				<th>View Ending Tower-ID Coordinates</th>
+				<th>View Map Locations</th>
+			</tr>
+
+			{% for pc in range(0, postlen) %}
+				<tr>
+					<td>{{ callpost[pc][0] }}</td>
+					<td>{{ callpost[pc][1] }}</td>
+					<td>{{ callpost[pc][2] }}</td>
+					<td>{{ callpost[pc][3][0] }}</td>
+					<td>{{ callpost[pc][4] }}</td>
+					<td>{{ callpost[pc][3][1] }}</td>
+					<td> {{ callpost[pc][5] }}</td>
+					<td id = "{{ pc }}">
+						<button onclick="showmap('{{callpost[pc][4]}}', '{{callpost[pc][5]}}')">View</button>
+					</td>
+				</tr>
+			{% endfor %}
+
+		</table>
+			
+		<script>
+			var a,b;
+			var aa,bb;
+			var origLat,origLng;
+			var endLat, endLng;
+
+			function showmap(a, b) {
+				aa = a.split(",");
+				bb = b.split(",")
+
+				origLat = aa[0].slice(1);
+				origLng = aa[1].slice(1,-1);
+
+				endLat = bb[0].slice(1);
+				endLng = bb[1].slice(1,-1);
+
+				console.log(origLat, origLng, endLat, endLng);
+
+				initMap();
+			}
+			    
+			function initMap() {
+		    	console.log(origLat, origLng)
+	      		var loc1 = { lat: parseFloat(origLat), lng: parseFloat(origLng) };
+      			var loc2 = { lat: parseFloat(endLat), lng: parseFloat(endLng) };
+          
+	        	var map = new google.maps.Map( document.getElementById('map'), {
+	            	zoom: 16,
+	            	center: loc1
+	          	});
+	          	
+	          	var marker = new google.maps.Marker({position: loc1, map: map});
+      			var marker = new google.maps.Marker({position: loc2, map: map});
+				
+			}
+	  	</script>
+
+	  	<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR-API-KEY&callback=initMap">
+	  	</script>
+
+	</body>
+
+</html>
+
+
+
